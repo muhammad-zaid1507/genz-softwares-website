@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="GenZ Softwares — Precision-engineered custom software for international business. Hotel management, travel agency, and SaaS solutions.">
+<title>GenZ Softwares</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Exo:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{overflow-x:hidden;background:#080608;color:#F0EBE2;font-family:'Exo',sans-serif;cursor:none;line-height:1.7}
+a{color:inherit;text-decoration:none}
+button{cursor:none;border:none;background:none;font:inherit}
+ul{list-style:none}
+img{max-width:100%}
+
+:root{
+  --gold:#C9A44A;
+  --gold-d:rgba(201,164,74,.08);
+  --gold-b:rgba(201,164,74,.25);
+  --gold-g:linear-gradient(135deg,#C9A44A 0%,#F0D485 50%,#C9A44A 100%);
+  --purple:#9333ea;
+  --cyan:#06b6d4;
+  --bg:#080608;
+  --bg2:#0e0b0d;
+  --card:#110e10;
+  --cream:#F0EBE2;
+  --cream2:#C0B8AC;
+  --muted:#6E645A;
+  --border:#1C181A;
+  --border2:#282024;
+  --ease-expo:cubic-bezier(0.16,1,0.3,1);
+  --ease-out:cubic-bezier(0.22,1,0.36,1);
+  --ease-in:cubic-bezier(0.64,0,0.78,0);
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--gold-b)}
+
+/* ── SELECTION ── */
+::selection{background:var(--gold-d);color:var(--gold)}
+
+/* ── PRELOADER ── */
+#preloader{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3rem;
+}
+.pre-letters{display:flex;gap:.5rem}
+.pre-letter{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3rem,8vw,6rem);font-weight:300;letter-spacing:.05em;
+  color:transparent;
+  background:var(--gold-g);-webkit-background-clip:text;background-clip:text;
+  opacity:0;transform:translateY(40px) scale(.8);
+}
+.pre-letter.alt{color:var(--cream);background:none;-webkit-background-clip:initial;background-clip:initial}
+.pre-tag{
+  font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.3em;
+  color:var(--muted);text-transform:uppercase;opacity:0;
+}
+.pre-bar-wrap{width:200px;height:1px;background:var(--border2);position:relative;overflow:hidden;opacity:0}
+.pre-bar{height:1px;width:0;background:var(--gold-g);position:absolute;left:0;top:0}
+.pre-pct{
+  font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.25em;
+  color:var(--muted);opacity:0;
+}
+
+/* ── CURSOR ── */
+#cursor{position:fixed;z-index:9998;pointer-events:none;top:0;left:0;mix-blend-mode:normal}
+.c-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--gold);
+  position:absolute;transform:translate(-50%,-50%);
+  transition:width .15s,height .15s,background .15s;
+}
+.c-ring{
+  width:28px;height:28px;border-radius:50%;
+  border:1px solid rgba(201,164,74,.5);
+  position:absolute;transform:translate(-50%,-50%);
+}
+body.cursor-hover .c-dot{width:8px;height:8px;background:var(--gold)}
+body.cursor-hover .c-ring{width:56px;height:56px;border-color:rgba(201,164,74,.8)}
+body.cursor-text .c-ring{width:2px;height:32px;border-radius:1px;border-color:var(--cream)}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.25rem 4rem;
+  border-bottom:1px solid transparent;
+  transition:background .4s,border-color .4s,padding .4s;
+  opacity:0;transform:translateY(-20px);
+}
+nav.scrolled{background:rgba(8,6,8,.9);backdrop-filter:blur(20px);border-color:var(--border);padding:1rem 4rem}
+.nav-logo{
+  font-family:'Cormorant Garamond',serif;font-weight:400;font-size:1.5rem;
+  letter-spacing:.02em;display:flex;align-items:baseline;gap:.35rem;
+}
+.nav-logo .g{color:var(--gold);font-style:italic}
+.nav-logo .sub{font-family:'JetBrains Mono',monospace;font-size:.52rem;color:var(--muted);letter-spacing:.25em;text-transform:uppercase}
+.nav-links{display:flex;gap:2.5rem;align-items:center}
+.nav-links a{
+  font-family:'Exo',sans-serif;font-size:.8rem;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--cream2);
+  position:relative;transition:color .3s;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-3px;left:0;right:0;height:1px;
+  background:var(--gold);transform:scaleX(0);transform-origin:right;
+  transition:transform .4s var(--ease-expo);
+}
+.nav-links a:hover{color:var(--cream)}
+.nav-links a:hover::after{transform:scaleX(1);transform-origin:left}
+.nav-cta{
+  font-family:'Exo',sans-serif;font-size:.78rem;font-weight:600;
+  letter-spacing:.15em;text-transform:uppercase;
+  padding:.6rem 1.6rem;
+  border:1px solid var(--gold-b);color:var(--gold);
+  position:relative;overflow:hidden;transition:color .3s;
+}
+.nav-cta::before{
+  content:'';position:absolute;inset:0;background:var(--gold);
+  transform:scaleX(0);transform-origin:right;transition:transform .4s var(--ease-expo);
+}
+.nav-cta:hover::before{transform:scaleX(1);transform-origin:left}
+.nav-cta:hover{color:var(--bg)}
+.nav-cta span{position:relative;z-index:1}
+.nav-mob{display:none;flex-direction:column;gap:5px;cursor:none;padding:.5rem}
+.nav-mob span{display:block;width:22px;height:1px;background:var(--cream2);transition:transform .3s,opacity .3s}
+
+/* ── MOBILE NAV ── */
+#mob-menu{
+  display:none;position:fixed;inset:0;z-index:99;
+  background:rgba(8,6,8,.97);backdrop-filter:blur(20px);
+  flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;
+}
+#mob-menu.open{display:flex}
+#mob-menu a{
+  font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;
+  color:var(--cream2);letter-spacing:.05em;transition:color .3s;
+}
+#mob-menu a:hover{color:var(--gold)}
+.mob-close{position:absolute;top:1.5rem;right:2rem;font-size:2rem;color:var(--muted)}
+
+/* ── HERO ── */
+#hero{
+  min-height:100dvh;display:flex;align-items:center;
+  position:relative;overflow:hidden;
+}
+#hero-canvas{position:absolute;inset:0;z-index:0}
+.hero-grid{
+  position:absolute;inset:0;z-index:0;
+  background-image:
+    linear-gradient(rgba(201,164,74,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(201,164,74,.04) 1px,transparent 1px);
+  background-size:80px 80px;
+}
+.hero-inner{
+  position:relative;z-index:1;
+  padding:0 4rem;max-width:1400px;width:100%;
+  display:flex;flex-direction:column;gap:2rem;
+}
+.hero-eyebrow{
+  display:flex;align-items:center;gap:1rem;
+  font-family:'JetBrains Mono',monospace;font-size:.65rem;
+  letter-spacing:.3em;text-transform:uppercase;color:var(--gold);
+  opacity:0;
+}
+.hero-eyebrow::before{content:'';width:40px;height:1px;background:var(--gold)}
+.hero-eyebrow .scan{
+  display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:var(--gold);animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.hero-h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3.5rem,7vw,7.5rem);font-weight:300;line-height:1.05;
+  letter-spacing:-.01em;color:var(--cream);
+}
+.hero-h1 .gold-line{
+  background:var(--gold-g);-webkit-background-clip:text;background-clip:text;color:transparent;
+  font-style:italic;
+}
+.hero-h1-line{overflow:hidden}
+.hero-sub{
+  font-size:.95rem;color:var(--cream2);max-width:540px;line-height:1.8;
+  opacity:0;transform:translateY(20px);
+}
+.hero-actions{display:flex;gap:1.5rem;align-items:center;opacity:0;transform:translateY(20px)}
+.btn-primary{
+  font-family:'Exo',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
+  padding:1rem 2.5rem;background:var(--gold);color:var(--bg);
+  position:relative;overflow:hidden;transition:color .3s,transform .3s;
+}
+.btn-primary::after{
+  content:'';position:absolute;inset:0;background:#000;
+  transform:scaleX(0);transform-origin:right;transition:transform .4s var(--ease-expo);
+}
+.btn-primary:hover{color:#F0D485}
+.btn-primary:hover::after{transform:scaleX(1);transform-origin:left}
+.btn-primary span{position:relative;z-index:1}
+.btn-ghost{
+  font-family:'Exo',sans-serif;font-size:.8rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--cream2);display:flex;align-items:center;gap:.75rem;
+  transition:color .3s;padding:.5rem 0;
+}
+.btn-ghost::after{content:'→';transition:transform .3s}
+.btn-ghost:hover{color:var(--gold)}
+.btn-ghost:hover::after{transform:translateX(6px)}
+.hero-meta{
+  display:flex;gap:3rem;opacity:0;transform:translateY(20px);
+  margin-top:1rem;
+}
+.hero-meta-item{
+  font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--muted);
+  display:flex;flex-direction:column;gap:.3rem;
+}
+.hero-meta-item strong{
+  font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;
+  color:var(--cream);letter-spacing:0;
+}
+.hero-scroll{
+  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.75rem;
+  font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.25em;
+  text-transform:uppercase;color:var(--muted);opacity:0;
+}
+.scroll-line{width:1px;height:50px;background:linear-gradient(var(--gold),transparent);animation:scrollDrop 2s ease-in-out infinite}
+@keyframes scrollDrop{0%{transform:scaleY(0);transform-origin:top;opacity:1}50%{transform:scaleY(1);transform-origin:top;opacity:1}100%{transform:scaleY(1);transform-origin:bottom;opacity:0}}
+
+/* ── MARQUEE ── */
+.marquee-wrap{
+  background:var(--card);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  overflow:hidden;padding:.9rem 0;position:relative;
+}
+.marquee-wrap::before,.marquee-wrap::after{
+  content:'';position:absolute;top:0;bottom:0;width:120px;z-index:1;
+}
+.marquee-wrap::before{left:0;background:linear-gradient(to right,var(--card),transparent)}
+.marquee-wrap::after{right:0;background:linear-gradient(to left,var(--card),transparent)}
+.marquee-track{display:flex;gap:0;will-change:transform}
+.marquee-inner{display:flex;gap:0;animation:marquee 25s linear infinite}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee-item{
+  display:flex;align-items:center;gap:1.5rem;padding:0 2rem;
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--cream2);white-space:nowrap;
+}
+.marquee-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0}
+
+/* ── SECTION SHARED ── */
+.section{padding:8rem 4rem}
+.section-eyebrow{
+  display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;
+  font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.3em;
+  text-transform:uppercase;color:var(--gold);
+}
+.section-eyebrow::before{content:'//';opacity:.5}
+.section-h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.5rem,5vw,4.5rem);font-weight:300;line-height:1.1;
+  color:var(--cream);
+}
+.section-h2 em{color:var(--gold);font-style:italic}
+.section-desc{font-size:.95rem;color:var(--cream2);max-width:520px;line-height:1.9}
+.section-header{margin-bottom:4.5rem}
+.section-header-flex{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:4.5rem;gap:2rem;flex-wrap:wrap}
+
+/* ── STATS ── */
+#stats{
+  background:var(--card);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:5rem 4rem;
+}
+.stats-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:0;max-width:1200px;margin:0 auto;
+}
+.stat-item{
+  text-align:center;padding:3rem 2rem;
+  border-right:1px solid var(--border);
+  position:relative;
+}
+.stat-item:last-child{border-right:none}
+.stat-num{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,5vw,4.5rem);font-weight:300;
+  color:var(--gold);line-height:1;display:block;margin-bottom:.5rem;
+}
+.stat-label{
+  font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.3em;
+  text-transform:uppercase;color:var(--muted);
+}
+.stat-accent{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:40px;height:2px;background:var(--gold);opacity:0;transition:opacity .3s,width .4s}
+.stat-item:hover .stat-accent{opacity:1;width:80px}
+
+/* ── SERVICES ── */
+#services{background:var(--bg);position:relative}
+.services-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border:1px solid var(--border);
+}
+.svc-card{
+  padding:3.5rem 2.5rem;border-right:1px solid var(--border);
+  position:relative;overflow:hidden;transition:background .4s;
+}
+.svc-card:last-child{border-right:none}
+.svc-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--gold-d),transparent);
+  opacity:0;transition:opacity .5s;
+}
+.svc-card:hover{background:var(--card)}
+.svc-card:hover::before{opacity:1}
+.svc-num{
+  font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.25em;
+  color:var(--muted);margin-bottom:2.5rem;display:block;
+}
+.svc-icon{
+  width:52px;height:52px;border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:2rem;position:relative;transition:border-color .4s;
+}
+.svc-card:hover .svc-icon{border-color:var(--gold-b)}
+.svc-icon svg{width:24px;height:24px;stroke:var(--gold);fill:none;stroke-width:1.5}
+.svc-icon::after{
+  content:'';position:absolute;inset:-4px;border:1px solid transparent;
+  transition:border-color .4s;
+}
+.svc-card:hover .svc-icon::after{border-color:var(--gold-b)}
+.svc-title{
+  font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;
+  color:var(--cream);margin-bottom:1rem;
+}
+.svc-desc{font-size:.88rem;color:var(--cream2);line-height:1.85}
+.svc-line{
+  position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:var(--gold);transform:scaleX(0);transform-origin:left;
+  transition:transform .6s var(--ease-expo);
+}
+.svc-card:hover .svc-line{transform:scaleX(1)}
+.svc-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
+.svc-tag{
+  font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.2em;
+  text-transform:uppercase;padding:.3rem .7rem;
+  border:1px solid var(--border2);color:var(--muted);
+  transition:border-color .3s,color .3s;
+}
+.svc-card:hover .svc-tag{border-color:var(--gold-b);color:var(--cream2)}
+
+/* ── PORTFOLIO ── */
+#portfolio{background:var(--bg2);position:relative;overflow:hidden}
+.port-bg{
+  position:absolute;top:-50%;right:-20%;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(201,164,74,.05) 0%,transparent 70%);
+  pointer-events:none;
+}
+.port-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:var(--border)}
+.port-card{
+  background:var(--card);padding:2.5rem;position:relative;overflow:hidden;
+  cursor:none;
+}
+.port-card-inner{position:relative;z-index:1}
+.port-card::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(201,164,74,.08),transparent 60%);
+  opacity:0;transition:opacity .5s;
+}
+.port-card:hover::after{opacity:1}
+.port-num{
+  font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.3em;
+  color:var(--muted);margin-bottom:1.5rem;
+}
+.port-badge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.2em;
+  text-transform:uppercase;padding:.3rem .9rem;
+  border:1px solid;margin-bottom:1.5rem;
+}
+.port-badge.live{border-color:rgba(6,214,96,.35);color:#06d660}
+.port-badge.live::before{content:'';width:5px;height:5px;border-radius:50%;background:#06d660;animation:pulse 2s infinite}
+.port-badge.saas{border-color:var(--gold-b);color:var(--gold)}
+.port-title{
+  font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;
+  color:var(--cream);margin-bottom:.75rem;line-height:1.15;
+}
+.port-desc{font-size:.86rem;color:var(--cream2);line-height:1.85;margin-bottom:2rem}
+.port-stack{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:2rem}
+.port-tag{
+  font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.15em;
+  text-transform:uppercase;padding:.25rem .6rem;
+  background:var(--gold-d);border:1px solid var(--gold-b);color:var(--gold);
+}
+.port-actions{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-manual{
+  font-family:'Exo',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  padding:.7rem 1.5rem;
+  border:1px solid var(--gold);color:var(--gold);
+  display:flex;align-items:center;gap:.6rem;
+  position:relative;overflow:hidden;transition:color .3s;
+}
+.btn-manual::before{
+  content:'';position:absolute;inset:0;background:var(--gold);
+  transform:scaleX(0);transform-origin:right;transition:transform .4s var(--ease-expo);
+}
+.btn-manual:hover{color:var(--bg)}
+.btn-manual:hover::before{transform:scaleX(1);transform-origin:left}
+.btn-manual span{position:relative;z-index:1;display:flex;align-items:center;gap:.6rem}
+.btn-live{
+  font-family:'Exo',sans-serif;font-size:.75rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  padding:.7rem 1.5rem;
+  border:1px solid var(--border2);color:var(--cream2);
+  display:flex;align-items:center;gap:.6rem;
+  transition:border-color .3s,color .3s;
+}
+.btn-live:hover{border-color:var(--cream2);color:var(--cream)}
+.port-corner{
+  position:absolute;top:1.5rem;right:1.5rem;
+  width:20px;height:20px;
+  border-top:1px solid var(--gold);border-right:1px solid var(--gold);
+  opacity:0;transition:opacity .4s;
+}
+.port-card:hover .port-corner{opacity:1}
+
+/* ── FOUNDERS ── */
+#founders{background:var(--bg);position:relative;overflow:hidden}
+.founders-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border)}
+.founder-card{
+  background:var(--bg);padding:4rem;
+  position:relative;overflow:hidden;
+}
+.founder-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--gold-d),transparent);
+  opacity:0;transition:opacity .6s;
+}
+.founder-card:hover::before{opacity:1}
+.founder-num{
+  font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.3em;
+  color:var(--muted);margin-bottom:2rem;
+}
+.founder-avatar{
+  width:80px;height:80px;border-radius:0;border:1px solid var(--border2);
+  margin-bottom:1.5rem;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--card);font-family:'Cormorant Garamond',serif;
+  font-size:2rem;font-weight:300;color:var(--gold);
+  position:relative;transition:border-color .4s;
+}
+.founder-card:hover .founder-avatar{border-color:var(--gold)}
+.founder-role{
+  font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.25em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;
+}
+.founder-name{
+  font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:400;
+  color:var(--cream);margin-bottom:1.25rem;line-height:1.1;
+}
+.founder-bio{font-size:.88rem;color:var(--cream2);line-height:1.9;margin-bottom:2rem}
+.founder-links{display:flex;gap:1rem}
+.founder-link{
+  font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--muted);
+  display:flex;align-items:center;gap:.4rem;
+  transition:color .3s;padding:.4rem 0;border-bottom:1px solid transparent;
+}
+.founder-link:hover{color:var(--gold);border-color:var(--gold)}
+.founder-deco{
+  position:absolute;bottom:2rem;right:2.5rem;
+  font-family:'Cormorant Garamond',serif;font-size:6rem;font-weight:300;
+  color:rgba(201,164,74,.05);line-height:1;pointer-events:none;
+}
+
+/* ── ABOUT ── */
+#about{background:var(--bg2);position:relative}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;max-width:1200px;margin:0 auto}
+.about-values{display:flex;flex-direction:column;gap:1.5rem;margin-top:2.5rem}
+.about-val{
+  display:grid;grid-template-columns:auto 1fr;gap:1.5rem;align-items:start;
+  padding:1.5rem;border:1px solid var(--border);
+  transition:border-color .4s,background .4s;
+}
+.about-val:hover{border-color:var(--gold-b);background:var(--card)}
+.about-val-icon{
+  width:36px;height:36px;border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:border-color .4s;
+}
+.about-val:hover .about-val-icon{border-color:var(--gold)}
+.about-val-icon svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:1.5}
+.about-val-title{font-family:'Exo',sans-serif;font-size:.85rem;font-weight:600;letter-spacing:.05em;color:var(--cream);margin-bottom:.3rem}
+.about-val-desc{font-size:.83rem;color:var(--cream2);line-height:1.7}
+.about-right{position:relative}
+.about-box{
+  border:1px solid var(--border);padding:3rem;position:relative;
+}
+.about-box::before{content:'';position:absolute;top:-1px;left:3rem;right:3rem;height:1px;background:var(--gold);opacity:.5}
+.about-box::after{content:'';position:absolute;bottom:-1px;left:3rem;right:3rem;height:1px;background:var(--gold);opacity:.5}
+.about-box p{font-size:.92rem;color:var(--cream2);line-height:1.95;margin-bottom:1.5rem}
+.about-box p:last-of-type{margin-bottom:0}
+.about-box p em{color:var(--gold);font-style:italic;font-family:'Cormorant Garamond',serif;font-size:1.05rem}
+.about-cta-row{margin-top:2.5rem;display:flex;gap:1.5rem;flex-wrap:wrap}
+
+/* ── CONTACT ── */
+#contact{background:var(--bg);position:relative;overflow:hidden}
+.contact-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:6rem;align-items:start;max-width:1200px;margin:0 auto}
+.contact-info{display:flex;flex-direction:column;gap:2.5rem}
+.contact-item{
+  padding:1.5rem;border:1px solid var(--border);
+  display:flex;gap:1.25rem;align-items:flex-start;
+  transition:border-color .4s;
+}
+.contact-item:hover{border-color:var(--gold-b)}
+.contact-icon{
+  width:40px;height:40px;border:1px solid var(--border2);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:border-color .4s;
+}
+.contact-item:hover .contact-icon{border-color:var(--gold)}
+.contact-icon svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:1.5}
+.contact-label{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
+.contact-val{font-size:.9rem;color:var(--cream2);line-height:1.6}
+.contact-val a{transition:color .3s}
+.contact-val a:hover{color:var(--gold)}
+form#cf{display:flex;flex-direction:column;gap:1.25rem}
+.form-group{display:flex;flex-direction:column;gap:.5rem}
+.form-label{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted)}
+.form-input,.form-textarea{
+  background:var(--card);border:1px solid var(--border2);
+  color:var(--cream);font-family:'Exo',sans-serif;font-size:.9rem;
+  padding:.9rem 1.2rem;width:100%;outline:none;
+  transition:border-color .3s;
+}
+.form-input:focus,.form-textarea:focus{border-color:var(--gold)}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--muted)}
+.form-textarea{min-height:130px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.btn-submit{
+  font-family:'Exo',sans-serif;font-size:.82rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+  padding:1rem 2.5rem;background:var(--gold);color:var(--bg);
+  width:fit-content;position:relative;overflow:hidden;transition:color .3s;
+  display:flex;align-items:center;gap:.75rem;
+}
+.btn-submit::after{content:'';position:absolute;inset:0;background:#000;transform:scaleX(0);transform-origin:right;transition:transform .4s var(--ease-expo)}
+.btn-submit:hover{color:var(--gold)}
+.btn-submit:hover::after{transform:scaleX(1);transform-origin:left}
+.btn-submit span{position:relative;z-index:1}
+.form-note{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.15em;color:var(--muted);line-height:1.7}
+
+/* ── FOOTER ── */
+footer{background:var(--card);border-top:1px solid var(--border);padding:4rem 4rem 2.5rem}
+.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;margin-bottom:4rem}
+.ft-brand p{font-size:.85rem;color:var(--cream2);line-height:1.8;margin-top:1rem;max-width:280px}
+.ft-logo{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--cream)}
+.ft-logo .g{color:var(--gold);font-style:italic}
+.ft-col h4{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:1.25rem}
+.ft-col ul{display:flex;flex-direction:column;gap:.8rem}
+.ft-col ul a{font-size:.85rem;color:var(--cream2);transition:color .3s}
+.ft-col ul a:hover{color:var(--gold)}
+.ft-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:2rem;border-top:1px solid var(--border);flex-wrap:wrap;gap:1rem}
+.ft-copy{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.15em;color:var(--muted)}
+.ft-tagline{font-family:'Cormorant Garamond',serif;font-size:.95rem;color:var(--muted);font-style:italic}
+
+/* ── PDF MODAL ── */
+#pdf-modal{
+  position:fixed;inset:0;z-index:10000;
+  background:rgba(8,6,8,.96);backdrop-filter:blur(20px);
+  display:none;flex-direction:column;
+  opacity:0;
+}
+#pdf-modal.open{display:flex}
+.modal-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.25rem 2rem;
+  border-bottom:1px solid var(--border);
+  background:var(--card);
+}
+.modal-title{
+  font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;
+  color:var(--cream);display:flex;align-items:center;gap:1rem;
+}
+.modal-tag{
+  font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.25em;
+  text-transform:uppercase;padding:.25rem .75rem;
+  border:1px solid var(--gold-b);color:var(--gold);
+}
+.modal-actions{display:flex;gap:1rem;align-items:center}
+.modal-download{
+  font-family:'Exo',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  padding:.5rem 1.25rem;border:1px solid var(--gold-b);color:var(--gold);
+  display:flex;align-items:center;gap:.5rem;transition:background .3s,color .3s;
+}
+.modal-download:hover{background:var(--gold);color:var(--bg)}
+.modal-close{
+  width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--border2);color:var(--cream2);cursor:none;
+  font-size:1.2rem;transition:border-color .3s,color .3s;
+}
+.modal-close:hover{border-color:var(--cream);color:var(--cream)}
+.modal-body{flex:1;position:relative}
+#pdf-frame{width:100%;height:100%;border:none}
+.modal-loading{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:1rem;
+}
+.modal-loading p{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.2em;color:var(--muted)}
+.modal-spin{width:30px;height:30px;border:1px solid var(--border2);border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── SCAN LINE ── */
+.scan-line{
+  position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  opacity:.4;animation:scanH 4s ease-in-out infinite;pointer-events:none;
+}
+@keyframes scanH{0%{top:0;opacity:.4}50%{opacity:.6}100%{top:100%;opacity:0}}
+
+/* ── ANIMATE-IN ── */
+.fade-up{opacity:0;transform:translateY(30px)}
+.fade-left{opacity:0;transform:translateX(-30px)}
+.fade-right{opacity:0;transform:translateX(30px)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  nav{padding:1.25rem 2rem}
+  nav.scrolled{padding:1rem 2rem}
+  .section{padding:6rem 2rem}
+  .hero-inner{padding:0 2rem}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .stat-item:nth-child(2){border-right:none}
+  .stat-item:nth-child(3){border-top:1px solid var(--border)}
+  .services-grid{grid-template-columns:1fr}
+  .svc-card{border-right:none;border-bottom:1px solid var(--border)}
+  .svc-card:last-child{border-bottom:none}
+  .port-grid{grid-template-columns:1fr}
+  .founders-grid{grid-template-columns:1fr}
+  .about-grid{grid-template-columns:1fr;gap:3rem}
+  .contact-grid{grid-template-columns:1fr;gap:3rem}
+  .ft-grid{grid-template-columns:1fr 1fr;gap:2.5rem}
+  #stats{padding:4rem 2rem}
+}
+@media(max-width:768px){
+  .nav-links,.nav-cta{display:none}
+  .nav-mob{display:flex}
+  .hero-meta{flex-direction:column;gap:1.5rem}
+  .form-row{grid-template-columns:1fr}
+  .ft-grid{grid-template-columns:1fr}
+  .founders-grid{grid-template-columns:1fr}
+  .founder-card{padding:2.5rem 1.5rem}
+  .about-box{padding:2rem}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<!-- ── PRELOADER ── -->
+<div id="preloader" role="status" aria-label="Loading GenZ Softwares">
+  <div class="pre-letters">
+    <span class="pre-letter" id="pl0">G</span>
+    <span class="pre-letter" id="pl1">e</span>
+    <span class="pre-letter" id="pl2">n</span>
+    <span class="pre-letter gold-line" id="pl3">Z</span>
+  </div>
+  <div class="pre-tag" id="pre-tag">Software Engineering Studio</div>
+  <div class="pre-bar-wrap" id="pre-bar-wrap">
+    <div class="pre-bar" id="pre-bar"></div>
+  </div>
+  <div class="pre-pct" id="pre-pct">0%</div>
+</div>
+
+<!-- ── CURSOR ── -->
+<div id="cursor" aria-hidden="true">
+  <div class="c-dot" id="c-dot"></div>
+  <div class="c-ring" id="c-ring"></div>
+</div>
+
+<!-- ── MOBILE MENU ── -->
+<div id="mob-menu" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <button class="mob-close" id="mob-close" aria-label="Close menu">×</button>
+  <a href="#hero" onclick="closeMobMenu()">Home</a>
+  <a href="#services" onclick="closeMobMenu()">Services</a>
+  <a href="#portfolio" onclick="closeMobMenu()">Portfolio</a>
+  <a href="#founders" onclick="closeMobMenu()">Founders</a>
+  <a href="#about" onclick="closeMobMenu()">About</a>
+  <a href="#contact" onclick="closeMobMenu()">Contact</a>
+</div>
+
+<!-- ── NAV ── -->
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <a href="#hero" class="nav-logo" aria-label="GenZ Softwares home">
+    Gen<span class="g">Z</span><span class="sub">Softwares</span>
+  </a>
+  <ul class="nav-links" role="list">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#founders">Founders</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta mag-btn" aria-label="Get in touch"><span>Get In Touch</span></a>
+  <button class="nav-mob" id="mob-toggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mob-menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero" aria-labelledby="hero-h1">
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow" aria-hidden="true">
+      <span class="scan"></span>
+      Lahore, Pakistan — Est. 2023
+    </div>
+    <h1 class="hero-h1" id="hero-h1">
+      <div class="hero-h1-line"><span class="h1-inner">We Build Software</span></div>
+      <div class="hero-h1-line"><span class="h1-inner gold-line">That Matters.</span></div>
+    </h1>
+    <p class="hero-sub">
+      Custom SaaS platforms, hotel management systems, and travel agency software —
+      precision-engineered for businesses that demand reliability.
+    </p>
+    <div class="hero-actions">
+      <a href="#portfolio" class="btn-primary mag-btn"><span>View Our Work</span></a>
+      <a href="#contact" class="btn-ghost">Start a Project</a>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><strong class="count-num" data-target="10">0</strong>Projects Shipped</div>
+      <div class="hero-meta-item"><strong class="count-num" data-target="3">0</strong>Live SaaS Products</div>
+      <div class="hero-meta-item"><strong>100%</strong>Custom Built</div>
+    </div>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ── MARQUEE ── -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-track">
+    <div class="marquee-inner">
+      <div class="marquee-item"><span class="marquee-dot"></span>Custom SaaS Development</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Hotel Management Systems</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Travel Agency Software</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>HotelBroker Platform</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Multi-Tenant Architecture</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Spring Boot · React · MySQL</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Ledger & Finance Systems</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Custom SaaS Development</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Hotel Management Systems</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Travel Agency Software</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>HotelBroker Platform</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Multi-Tenant Architecture</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Spring Boot · React · MySQL</div>
+      <div class="marquee-item"><span class="marquee-dot"></span>Ledger & Finance Systems</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── STATS ── -->
+<section id="stats" aria-label="Company statistics">
+  <div class="stats-grid">
+    <div class="stat-item fade-up">
+      <span class="stat-num" data-target="10" data-suffix="+">0+</span>
+      <div class="stat-label">Projects Delivered</div>
+      <div class="stat-accent"></div>
+    </div>
+    <div class="stat-item fade-up" style="transition-delay:.1s">
+      <span class="stat-num" data-target="3">0</span>
+      <div class="stat-label">Live SaaS Products</div>
+      <div class="stat-accent"></div>
+    </div>
+    <div class="stat-item fade-up" style="transition-delay:.2s">
+      <span class="stat-num" data-target="100" data-suffix="%">0%</span>
+      <div class="stat-label">Custom-Engineered</div>
+      <div class="stat-accent"></div>
+    </div>
+    <div class="stat-item fade-up" style="transition-delay:.3s">
+      <span class="stat-num" data-target="24" data-suffix="/7">0/7</span>
+      <div class="stat-label">Support Available</div>
+      <div class="stat-accent"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICES ── -->
+<section id="services" class="section" aria-labelledby="svc-h2">
+  <div class="section-header-flex">
+    <div>
+      <div class="section-eyebrow">What We Do</div>
+      <h2 class="section-h2 fade-up" id="svc-h2">Engineering <em>Solutions</em><br>Built to Scale</h2>
+    </div>
+    <p class="section-desc fade-right">
+      Every product we build is tailored to the client's exact workflow —
+      no off-the-shelf compromise, no generic templates.
+    </p>
+  </div>
+  <div class="services-grid">
+    <div class="svc-card fade-up">
+      <span class="svc-num">01</span>
+      <div class="svc-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <h3 class="svc-title">Custom SaaS Platforms</h3>
+      <p class="svc-desc">Multi-tenant cloud software engineered from the ground up. We design your architecture, build the backend, and ship production-ready systems that grow with your user base.</p>
+      <div class="svc-tags">
+        <span class="svc-tag">Spring Boot</span>
+        <span class="svc-tag">React</span>
+        <span class="svc-tag">MySQL</span>
+        <span class="svc-tag">Azure</span>
+        <span class="svc-tag">Railway</span>
+      </div>
+      <div class="svc-line"></div>
+    </div>
+    <div class="svc-card fade-up" style="transition-delay:.1s">
+      <span class="svc-num">02</span>
+      <div class="svc-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <h3 class="svc-title">Hotel & Tourism Tech</h3>
+      <p class="svc-desc">End-to-end hotel management systems with room allotment, partner ledgers, voucher generation, and real-time financial tracking built for hospitality operations.</p>
+      <div class="svc-tags">
+        <span class="svc-tag">HMS</span>
+        <span class="svc-tag">Ledgers</span>
+        <span class="svc-tag">Vouchers</span>
+        <span class="svc-tag">Multi-Tenant</span>
+      </div>
+      <div class="svc-line"></div>
+    </div>
+    <div class="svc-card fade-up" style="transition-delay:.2s">
+      <span class="svc-num">03</span>
+      <div class="svc-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <h3 class="svc-title">Travel Agency Systems</h3>
+      <p class="svc-desc">Complete travel agency software with ticket booking, visa processing, hotel inventory management, client/supplier ledgers, and automated financial reporting.</p>
+      <div class="svc-tags">
+        <span class="svc-tag">Ticketing</span>
+        <span class="svc-tag">Visa Mgmt</span>
+        <span class="svc-tag">Ledgers</span>
+        <span class="svc-tag">Reporting</span>
+      </div>
+      <div class="svc-line"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PORTFOLIO ── -->
+<section id="portfolio" class="section" aria-labelledby="port-h2">
+  <div class="port-bg" aria-hidden="true"></div>
+  <div class="section-header-flex">
+    <div>
+      <div class="section-eyebrow">Our Products</div>
+      <h2 class="section-h2 fade-up" id="port-h2">Three Products.<br><em>Real Clients.</em> Live.</h2>
+    </div>
+    <p class="section-desc fade-right">
+      Download or view the full user manual for each product — built from real client workflows, deployed in production.
+    </p>
+  </div>
+  <div class="port-grid">
+
+    <!-- HMS -->
+    <div class="port-card fade-up">
+      <div class="port-corner" aria-hidden="true"></div>
+      <div class="port-card-inner">
+        <div class="port-num">Product 01 / HMS</div>
+        <div class="port-badge live">
+          <span>Live</span>
+        </div>
+        <h3 class="port-title">Gulnar Hotel<br>Management System</h3>
+        <p class="port-desc">
+          A complete hospitality management platform built for Gulnar Hotel. Features a unique 3-partner room allotment system, real-time ledgers per partner, branded voucher printing, and full financial reporting for hotel operations.
+        </p>
+        <div class="port-stack">
+          <span class="port-tag">Spring Boot</span>
+          <span class="port-tag">React</span>
+          <span class="port-tag">MySQL</span>
+          <span class="port-tag">Railway</span>
+        </div>
+        <div class="port-actions">
+          <button class="btn-manual" onclick="openPDF('manuals/Gulnar_HMS_User_Manual.pdf','Gulnar HMS — User Manual')" aria-label="View Gulnar HMS user manual">
+            <span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              View User Manual
+            </span>
+          </button>
+          <a href="https://hms-v2-production.up.railway.app" target="_blank" rel="noopener" class="btn-live" aria-label="Open Gulnar HMS live application">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Live App
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- TravelPro -->
+    <div class="port-card fade-up" style="transition-delay:.1s">
+      <div class="port-corner" aria-hidden="true"></div>
+      <div class="port-card-inner">
+        <div class="port-num">Product 02 / Travel</div>
+        <div class="port-badge saas">SaaS</div>
+        <h3 class="port-title">TravelPro Agency<br>Management Suite</h3>
+        <p class="port-desc">
+          A multi-tenant travel agency SaaS supporting ticket booking, visa processing, hotel inventory, and detailed client/supplier ledger management. Built for agencies handling complex international bookings.
+        </p>
+        <div class="port-stack">
+          <span class="port-tag">Spring Boot</span>
+          <span class="port-tag">React</span>
+          <span class="port-tag">MySQL</span>
+          <span class="port-tag">Multi-Tenant</span>
+        </div>
+        <div class="port-actions">
+          <button class="btn-manual" onclick="openPDF('manuals/TravelPro_User_Manual.pdf','TravelPro — User Manual')" aria-label="View TravelPro user manual">
+            <span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              View User Manual
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HotelBroker -->
+    <div class="port-card fade-up" style="transition-delay:.2s">
+      <div class="port-corner" aria-hidden="true"></div>
+      <div class="port-card-inner">
+        <div class="port-num">Product 03 / SaaS</div>
+        <div class="port-badge live">
+          <span>Live</span>
+        </div>
+        <h3 class="port-title">HotelBroker<br>SaaS Platform</h3>
+        <p class="port-desc">
+          Purpose-built for hotel room brokers. Full ledger cycle management, branded voucher generation with company logo, supplier/client management, payment tracking, and clean financial reporting.
+        </p>
+        <div class="port-stack">
+          <span class="port-tag">Spring Boot</span>
+          <span class="port-tag">React</span>
+          <span class="port-tag">DigitalOcean</span>
+          <span class="port-tag">Ledger</span>
+        </div>
+        <div class="port-actions">
+          <button class="btn-manual" onclick="openPDF('manuals/HotelBroker_SaaS_User_Manual.pdf','HotelBroker SaaS — User Manual')" aria-label="View HotelBroker user manual">
+            <span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              View User Manual
+            </span>
+          </button>
+          <a href="https://hotel-broker-saas-f9nyk.ondigitalocean.app" target="_blank" rel="noopener" class="btn-live" aria-label="Open HotelBroker live application">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Live App
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── FOUNDERS ── -->
+<section id="founders" class="section" aria-labelledby="founders-h2">
+  <div class="section-header">
+    <div class="section-eyebrow">The Team</div>
+    <h2 class="section-h2 fade-up" id="founders-h2">Built by <em>Founders</em><br>Who Ship.</h2>
+  </div>
+  <div class="founders-grid">
+    <div class="founder-card fade-up">
+      <div class="founder-num">Founder 01</div>
+      <div class="founder-avatar" aria-hidden="true">SF</div>
+      <div class="founder-role">Co-Founder & Lead Developer</div>
+      <h3 class="founder-name">Shifa Fatima</h3>
+      <p class="founder-bio">
+        Full-stack engineer and architect behind GenZ Softwares' core products.
+        Shifa leads the backend engineering with Spring Boot and system design,
+        delivering custom SaaS platforms and hotel management systems that operate at scale.
+      </p>
+      <div class="founder-links">
+        <a href="https://wa.me/923214242180" class="founder-link" target="_blank" rel="noopener" aria-label="WhatsApp Shifa Fatima">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.24h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +92 321 4242180
+        </a>
+      </div>
+      <div class="founder-deco" aria-hidden="true">SF</div>
+    </div>
+    <div class="founder-card fade-up" style="transition-delay:.15s">
+      <div class="founder-num">Founder 02</div>
+      <div class="founder-avatar" aria-hidden="true">ZK</div>
+      <div class="founder-role">Co-Founder & Product Strategist</div>
+      <h3 class="founder-name">Zaid Khalid</h3>
+      <p class="founder-bio">
+        Product visionary and client relationship lead at GenZ Softwares.
+        Zaid bridges the gap between client requirements and technical delivery —
+        ensuring every product ships with both precision engineering and real-world usability.
+      </p>
+      <div class="founder-links">
+        <a href="https://wa.me/923244870261" class="founder-link" target="_blank" rel="noopener" aria-label="WhatsApp Zaid Khalid">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.24h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +92 324 4870261
+        </a>
+      </div>
+      <div class="founder-deco" aria-hidden="true">ZK</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about" class="section" aria-labelledby="abt-h2">
+  <div class="about-grid">
+    <div>
+      <div class="section-eyebrow">Who We Are</div>
+      <h2 class="section-h2 fade-up" id="abt-h2">Small Team.<br><em>Big Systems.</em></h2>
+      <div class="about-values">
+        <div class="about-val fade-up">
+          <div class="about-val-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div>
+            <div class="about-val-title">Precision Over Speed</div>
+            <div class="about-val-desc">We don't rush to ship. Every line of code is written with intent — clean, maintainable, and built to last.</div>
+          </div>
+        </div>
+        <div class="about-val fade-up" style="transition-delay:.1s">
+          <div class="about-val-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <div class="about-val-title">Client-First Architecture</div>
+            <div class="about-val-desc">Every feature we build maps directly to a client workflow — no bloat, no generic UX, no compromise.</div>
+          </div>
+        </div>
+        <div class="about-val fade-up" style="transition-delay:.2s">
+          <div class="about-val-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <div>
+            <div class="about-val-title">Long-Term Support</div>
+            <div class="about-val-desc">We maintain what we build. Our clients get ongoing support, updates, and feature additions as their business scales.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="about-right fade-right">
+      <div class="about-box">
+        <p>GenZ Softwares is a <em>Lahore-based custom software studio</em> founded by Shifa Fatima and Zaid Khalid. We build production-grade SaaS platforms for businesses that can't afford to compromise on software quality.</p>
+        <p>Our current product portfolio spans hotel management, travel agency operations, and hotel brokerage — three live systems serving real clients with real transactions every day.</p>
+        <p>We're selective about the projects we take on because we commit fully to every client. If you have a complex workflow that needs to become reliable software, we want to hear about it.</p>
+      </div>
+      <div class="about-cta-row">
+        <a href="https://wa.me/923214242180" class="btn-primary mag-btn" target="_blank" rel="noopener" aria-label="WhatsApp us"><span>WhatsApp Us</span></a>
+        <a href="#contact" class="btn-ghost">Send a Message</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact" class="section" aria-labelledby="contact-h2">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="section-header">
+      <div class="section-eyebrow">Get In Touch</div>
+      <h2 class="section-h2 fade-up" id="contact-h2">Let's Build<br><em>Something Real.</em></h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-item fade-up">
+          <div class="contact-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.24h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">WhatsApp</div>
+            <div class="contact-val">
+              <a href="https://wa.me/923214242180" target="_blank" rel="noopener">+92 321 4242180</a><br>
+              <a href="https://wa.me/923244870261" target="_blank" rel="noopener">+92 324 4870261</a>
+            </div>
+          </div>
+        </div>
+        <div class="contact-item fade-up" style="transition-delay:.1s">
+          <div class="contact-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Location</div>
+            <div class="contact-val">Lahore, Punjab, Pakistan</div>
+          </div>
+        </div>
+        <div class="contact-item fade-up" style="transition-delay:.2s">
+          <div class="contact-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Speciality</div>
+            <div class="contact-val">Custom SaaS · HMS · Travel Agency Software</div>
+          </div>
+        </div>
+      </div>
+      <form id="cf" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="f-name">Name *</label>
+            <input class="form-input" type="text" id="f-name" name="name" placeholder="Your name" required autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-email">Email *</label>
+            <input class="form-input" type="email" id="f-email" name="email" placeholder="your@email.com" required autocomplete="email">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-subject">Subject</label>
+          <input class="form-input" type="text" id="f-subject" name="subject" placeholder="Project enquiry" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-msg">Message *</label>
+          <textarea class="form-textarea" id="f-msg" name="message" placeholder="Tell us about your project..." required></textarea>
+        </div>
+        <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap">
+          <button type="submit" class="btn-submit mag-btn" aria-label="Send message">
+            <span>
+              Send Message
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </span>
+          </button>
+          <p class="form-note">Or reach us directly on WhatsApp for faster response.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="ft-grid">
+    <div class="ft-brand">
+      <div class="ft-logo">Gen<span class="g">Z</span> Softwares</div>
+      <p>Precision-engineered custom software for businesses that demand reliability. Lahore, Pakistan.</p>
+    </div>
+    <div class="ft-col">
+      <h4>Navigate</h4>
+      <ul role="list">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#founders">Founders</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h4>Products</h4>
+      <ul role="list">
+        <li><a href="https://hms-v2-production.up.railway.app" target="_blank" rel="noopener">Gulnar HMS</a></li>
+        <li><a href="#">TravelPro</a></li>
+        <li><a href="https://hotel-broker-saas-f9nyk.ondigitalocean.app" target="_blank" rel="noopener">HotelBroker SaaS</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h4>Contact</h4>
+      <ul role="list">
+        <li><a href="https://wa.me/923214242180" target="_blank" rel="noopener">+92 321 4242180</a></li>
+        <li><a href="https://wa.me/923244870261" target="_blank" rel="noopener">+92 324 4870261</a></li>
+        <li><a href="#">Lahore, Pakistan</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <div class="ft-copy">© 2025 GenZ Softwares. All rights reserved.</div>
+    <div class="ft-tagline">Engineering what matters.</div>
+  </div>
+</footer>
+
+<!-- ── PDF MODAL ── -->
+<div id="pdf-modal" role="dialog" aria-modal="true" aria-label="User Manual Viewer">
+  <div class="modal-header">
+    <div class="modal-title">
+      <span id="modal-title-text">User Manual</span>
+      <span class="modal-tag">PDF</span>
+    </div>
+    <div class="modal-actions">
+      <a href="#" id="modal-download" class="modal-download" download aria-label="Download PDF">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download
+      </a>
+      <button class="modal-close" id="modal-close" aria-label="Close manual viewer">×</button>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="modal-loading" id="modal-loading" aria-live="polite">
+      <div class="modal-spin" aria-hidden="true"></div>
+      <p>Loading manual...</p>
+    </div>
+    <iframe id="pdf-frame" title="User Manual PDF" aria-label="PDF document viewer"></iframe>
+  </div>
+</div>
+
+<script>
+// ── GSAP SETUP ──
+gsap.registerPlugin(ScrollTrigger);
+
+// ── PRELOADER ──
+(function(){
+  const letters = [document.getElementById('pl0'),document.getElementById('pl1'),document.getElementById('pl2'),document.getElementById('pl3')];
+  const tag = document.getElementById('pre-tag');
+  const barWrap = document.getElementById('pre-bar-wrap');
+  const bar = document.getElementById('pre-bar');
+  const pct = document.getElementById('pre-pct');
+  const loader = document.getElementById('preloader');
+  const nav = document.getElementById('nav');
+
+  let progress = 0;
+  const tl = gsap.timeline({
+    onComplete: () => {
+      gsap.to(loader, {opacity:0, duration:.6, ease:'expo.in', onComplete:()=>{
+        loader.style.display='none';
+        document.body.style.overflow='';
+        gsap.to(nav, {opacity:1, y:0, duration:.8, ease:'expo.out'});
+        animateHero();
+      }});
+    }
+  });
+
+  document.body.style.overflow = 'hidden';
+
+  tl.to(letters, {opacity:1, y:0, scale:1, stagger:.1, duration:.6, ease:'back.out(1.7)'})
+    .to([tag,barWrap,pct], {opacity:1, y:0, duration:.4, ease:'expo.out'}, '-=.2')
+    .to(bar, {width:'100%', duration:1.4, ease:'power2.inOut',
+        onUpdate: function(){
+          const w = Math.round(parseFloat(bar.style.width || '0'));
+          pct.textContent = w + '%';
+        }
+    })
+    .to(letters, {y:-40, opacity:0, stagger:.05, duration:.5, ease:'expo.in'}, '-=.1');
+})();
+
+// ── HERO ANIMATION ──
+function animateHero(){
+  const inners = document.querySelectorAll('.h1-inner');
+  const eyebrow = document.querySelector('.hero-eyebrow');
+  const sub = document.querySelector('.hero-sub');
+  const actions = document.querySelector('.hero-actions');
+  const meta = document.querySelector('.hero-meta');
+  const scroll = document.querySelector('.hero-scroll');
+
+  gsap.set(inners, {y:'100%', opacity:0});
+  gsap.set([eyebrow, sub, actions, meta, scroll], {opacity:0, y:20});
+
+  const tl = gsap.timeline();
+  tl.to(eyebrow, {opacity:1, y:0, duration:.6, ease:'expo.out'})
+    .to(inners, {y:'0%', opacity:1, stagger:.12, duration:.9, ease:'expo.out'}, '-=.3')
+    .to(sub, {opacity:1, y:0, duration:.7, ease:'expo.out'}, '-=.4')
+    .to(actions, {opacity:1, y:0, duration:.6, ease:'expo.out'}, '-=.5')
+    .to(meta, {opacity:1, y:0, duration:.6, ease:'expo.out'}, '-=.4')
+    .to(scroll, {opacity:1, y:0, duration:.6, ease:'expo.out'}, '-=.3');
+
+  // counter animation in hero
+  document.querySelectorAll('.count-num').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    gsap.to(el, {
+      textContent: target, duration: 2, ease: 'power2.out', delay: 1.5,
+      snap: {textContent: 1},
+      onUpdate: function(){ el.textContent = Math.round(parseFloat(el.textContent)) }
+    });
+  });
+}
+
+// ── PARTICLE CANVAS ──
+(function(){
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [], W, H, animId;
+
+  function resize(){
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+    if(particles.length === 0) init();
+  }
+
+  function init(){
+    particles = [];
+    const count = Math.floor((W * H) / 12000);
+    for(let i = 0; i < count; i++){
+      particles.push({
+        x: Math.random() * W, y: Math.random() * H,
+        vx: (Math.random() - .5) * .3, vy: (Math.random() - .5) * .3,
+        size: Math.random() * 1.5 + .3,
+        opacity: Math.random() * .4 + .05,
+        gold: Math.random() > .7
+      });
+    }
+  }
+
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if(p.x < 0) p.x = W; if(p.x > W) p.x = 0;
+      if(p.y < 0) p.y = H; if(p.y > H) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+      ctx.fillStyle = p.gold ? `rgba(201,164,74,${p.opacity})` : `rgba(240,235,226,${p.opacity * .5})`;
+      ctx.fill();
+    });
+    // draw connections
+    particles.forEach((a, i) => {
+      for(let j = i+1; j < particles.length; j++){
+        const b = particles[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if(dist < 120){
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = `rgba(201,164,74,${.08 * (1 - dist/120)})`;
+          ctx.lineWidth = .5;
+          ctx.stroke();
+        }
+      }
+    });
+    animId = requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', () => { resize(); });
+  resize(); draw();
+
+  // pause when hidden
+  document.addEventListener('visibilitychange', () => {
+    if(document.hidden){ cancelAnimationFrame(animId); }
+    else draw();
+  });
+})();
+
+// ── CURSOR ──
+(function(){
+  const dot = document.getElementById('c-dot');
+  const ring = document.getElementById('c-ring');
+  if(!ring) return;
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  let rafId;
+
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+  function update(){
+    gsap.set(dot, {x: mx, y: my});
+    rx += (mx - rx) * .12; ry += (my - ry) * .12;
+    gsap.set(ring, {x: rx, y: ry});
+    rafId = requestAnimationFrame(update);
+  }
+  update();
+
+  document.querySelectorAll('a,button,.port-card,.svc-card,.stat-item').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+  });
+  document.querySelectorAll('p,input,textarea').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-text'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-text'));
+  });
+
+  document.addEventListener('mouseleave', () => { gsap.set([dot,ring], {opacity:0}); });
+  document.addEventListener('mouseenter', () => { gsap.set([dot,ring], {opacity:1}); });
+})();
+
+// ── NAV SCROLL ──
+(function(){
+  const nav = document.getElementById('nav');
+  ScrollTrigger.create({
+    start: '100px top',
+    onEnter: () => nav.classList.add('scrolled'),
+    onLeaveBack: () => nav.classList.remove('scrolled')
+  });
+})();
+
+// ── MOBILE NAV ──
+function closeMobMenu(){
+  document.getElementById('mob-menu').classList.remove('open');
+  document.getElementById('mob-toggle').setAttribute('aria-expanded','false');
+}
+document.getElementById('mob-toggle').addEventListener('click', () => {
+  const menu = document.getElementById('mob-menu');
+  const open = menu.classList.toggle('open');
+  document.getElementById('mob-toggle').setAttribute('aria-expanded', open);
+});
+document.getElementById('mob-close').addEventListener('click', closeMobMenu);
+
+// ── SCROLL ANIMATIONS ──
+(function(){
+  document.querySelectorAll('.fade-up,.fade-left,.fade-right').forEach(el => {
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 88%',
+      onEnter: () => gsap.to(el, {
+        opacity: 1, x: 0, y: 0, duration: .8,
+        ease: 'expo.out',
+        delay: parseFloat(el.style.transitionDelay || 0)
+      })
+    });
+  });
+})();
+
+// ── STATS COUNTER ──
+(function(){
+  document.querySelectorAll('.stat-num[data-target]').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    const suffix = el.dataset.suffix || '';
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 85%',
+      once: true,
+      onEnter: () => {
+        gsap.to({val:0}, {
+          val: target, duration: 1.8, ease: 'power2.out',
+          onUpdate: function(){ el.textContent = Math.round(this.targets()[0].val) + suffix; }
+        });
+      }
+    });
+  });
+})();
+
+// ── MAGNETIC BUTTONS ──
+(function(){
+  document.querySelectorAll('.mag-btn').forEach(btn => {
+    const strength = 0.3;
+    btn.addEventListener('mousemove', e => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width/2;
+      const y = e.clientY - rect.top - rect.height/2;
+      gsap.to(btn, {x: x*strength, y: y*strength, duration:.4, ease:'power2.out'});
+    });
+    btn.addEventListener('mouseleave', () => {
+      gsap.to(btn, {x:0, y:0, duration:.6, ease:'elastic.out(1,.4)'});
+    });
+  });
+})();
+
+// ── CARD TILT ──
+(function(){
+  document.querySelectorAll('.port-card,.svc-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - .5;
+      const y = (e.clientY - rect.top) / rect.height - .5;
+      gsap.to(card, {
+        rotateX: -y * 6, rotateY: x * 6,
+        transformPerspective: 800,
+        duration: .4, ease: 'power2.out'
+      });
+    });
+    card.addEventListener('mouseleave', () => {
+      gsap.to(card, {rotateX:0, rotateY:0, duration:.8, ease:'elastic.out(1,.4)'});
+    });
+  });
+})();
+
+// ── PDF MODAL ──
+const modal = document.getElementById('pdf-modal');
+const frame = document.getElementById('pdf-frame');
+const modalTitle = document.getElementById('modal-title-text');
+const modalDownload = document.getElementById('modal-download');
+const modalLoading = document.getElementById('modal-loading');
+
+function openPDF(src, title){
+  modalTitle.textContent = title;
+  frame.src = '';
+  modalDownload.href = src;
+  modalLoading.style.display = 'flex';
+  frame.style.visibility = 'hidden';
+  modal.classList.add('open');
+  gsap.fromTo(modal, {opacity:0}, {opacity:1, duration:.4, ease:'expo.out'});
+  document.body.style.overflow = 'hidden';
+
+  frame.onload = () => {
+    modalLoading.style.display = 'none';
+    frame.style.visibility = 'visible';
+  };
+  frame.src = src;
+}
+
+function closePDF(){
+  gsap.to(modal, {opacity:0, duration:.3, ease:'expo.in', onComplete:()=>{
+    modal.classList.remove('open');
+    frame.src = '';
+    document.body.style.overflow = '';
+  }});
+}
+
+document.getElementById('modal-close').addEventListener('click', closePDF);
+modal.addEventListener('click', e => { if(e.target === modal) closePDF(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && modal.classList.contains('open')) closePDF(); });
+
+// ── FORM SUBMIT ──
+document.getElementById('cf').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const btn = this.querySelector('.btn-submit');
+  const span = btn.querySelector('span');
+  const orig = span.innerHTML;
+  span.innerHTML = 'Sending...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(this.action, {method:'POST', body: new FormData(this), headers:{Accept:'application/json'}});
+    if(res.ok){
+      span.innerHTML = 'Message Sent ✓';
+      this.reset();
+      setTimeout(()=>{ span.innerHTML = orig; btn.disabled = false; }, 3000);
+    } else {
+      span.innerHTML = 'Error — try WhatsApp';
+      setTimeout(()=>{ span.innerHTML = orig; btn.disabled = false; }, 3000);
+    }
+  } catch {
+    span.innerHTML = 'Error — try WhatsApp';
+    setTimeout(()=>{ span.innerHTML = orig; btn.disabled = false; }, 3000);
+  }
+});
+</script>
+</body>
+</html>
