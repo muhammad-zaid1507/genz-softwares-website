@@ -641,6 +641,7 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:4rem 4r
   .svc-card{border-right:none;border-bottom:1px solid var(--border)}
   .svc-card:last-child{border-bottom:none}
   .port-grid{grid-template-columns:1fr}
+  #testimonials [style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr!important}
   .founders-grid{grid-template-columns:1fr}
   .about-grid{grid-template-columns:1fr;gap:3rem}
   .contact-grid{grid-template-columns:1fr;gap:3rem}
@@ -704,6 +705,7 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:4rem 4r
   <ul class="nav-links" role="list">
     <li><a href="#services">Services</a></li>
     <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#testimonials">Clients</a></li>
     <li><a href="#founders">Founders</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -736,8 +738,8 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:4rem 4r
       <a href="#contact" class="btn-ghost">Start a Project</a>
     </div>
     <div class="hero-meta">
-      <div class="hero-meta-item"><strong class="count-num" data-target="10">0</strong>Projects Shipped</div>
-      <div class="hero-meta-item"><strong class="count-num" data-target="3">0</strong>Live SaaS Products</div>
+      <div class="hero-meta-item"><strong class="count-num" data-target="3">3</strong>Projects Shipped</div>
+      <div class="hero-meta-item"><strong class="count-num" data-target="3">3</strong>Live SaaS Products</div>
       <div class="hero-meta-item"><strong>100%</strong>Custom Built</div>
     </div>
   </div>
@@ -773,22 +775,22 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:4rem 4r
 <section id="stats" aria-label="Company statistics">
   <div class="stats-grid">
     <div class="stat-item fade-up">
-      <span class="stat-num" data-target="10" data-suffix="+">0+</span>
+      <span class="stat-num" data-target="3">3</span>
       <div class="stat-label">Projects Delivered</div>
       <div class="stat-accent"></div>
     </div>
     <div class="stat-item fade-up" style="transition-delay:.1s">
-      <span class="stat-num" data-target="3">0</span>
+      <span class="stat-num" data-target="3">3</span>
       <div class="stat-label">Live SaaS Products</div>
       <div class="stat-accent"></div>
     </div>
     <div class="stat-item fade-up" style="transition-delay:.2s">
-      <span class="stat-num" data-target="100" data-suffix="%">0%</span>
+      <span class="stat-num" data-target="100" data-suffix="%">100%</span>
       <div class="stat-label">Custom-Engineered</div>
       <div class="stat-accent"></div>
     </div>
     <div class="stat-item fade-up" style="transition-delay:.3s">
-      <span class="stat-num" data-target="24" data-suffix="/7">0/7</span>
+      <span class="stat-num" data-target="24" data-suffix="/7">24/7</span>
       <div class="stat-label">Support Available</div>
       <div class="stat-accent"></div>
     </div>
@@ -964,6 +966,54 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:4rem 4r
       </div>
     </div>
 
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section id="testimonials" class="section" aria-labelledby="testi-h2" style="background:var(--bg2);position:relative;overflow:hidden">
+  <div style="position:absolute;top:-50%;left:-10%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(201,164,74,.04) 0%,transparent 70%);pointer-events:none" aria-hidden="true"></div>
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="section-header">
+      <div class="section-eyebrow">Client Stories</div>
+      <h2 class="section-h2 fade-up" id="testi-h2">What Our <em>Clients</em> Say.</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5px;background:var(--border)">
+
+      <!-- Testimonial 1 -->
+      <div class="testi-card fade-up" style="background:var(--card);padding:3rem;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:var(--gold-g)"></div>
+        <div style="position:absolute;top:2rem;right:2.5rem;font-family:'Cormorant Garamond',serif;font-size:5rem;font-weight:300;color:rgba(201,164,74,.08);line-height:1;pointer-events:none" aria-hidden="true">"</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem">Client 01 — Hospitality</div>
+        <blockquote style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:400;line-height:1.7;color:var(--cream);font-style:italic;margin-bottom:2rem;position:relative;z-index:1">
+          "The software completely replaced our Excel system. Room allotments, ledgers, vouchers — everything is automated now."
+        </blockquote>
+        <div style="display:flex;align-items:center;gap:1rem">
+          <div style="width:42px;height:42px;border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--gold);flex-shrink:0">GH</div>
+          <div>
+            <div style="font-family:'Exo',sans-serif;font-size:.9rem;font-weight:600;color:var(--cream)">Gulnar Hotel</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)">Madina, Saudi Arabia</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial 2 -->
+      <div class="testi-card fade-up" style="background:var(--card);padding:3rem;position:relative;overflow:hidden;transition-delay:.15s">
+        <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:var(--gold-g)"></div>
+        <div style="position:absolute;top:2rem;right:2.5rem;font-family:'Cormorant Garamond',serif;font-size:5rem;font-weight:300;color:rgba(201,164,74,.08);line-height:1;pointer-events:none" aria-hidden="true">"</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem">Client 02 — Partner Company</div>
+        <blockquote style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:400;line-height:1.7;color:var(--cream);font-style:italic;margin-bottom:2rem;position:relative;z-index:1">
+          "We switched to a fully branded version of the system. The team delivered every update we asked for, fast."
+        </blockquote>
+        <div style="display:flex;align-items:center;gap:1rem">
+          <div style="width:42px;height:42px;border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--gold);flex-shrink:0">HP</div>
+          <div>
+            <div style="font-family:'Exo',sans-serif;font-size:.9rem;font-weight:600;color:var(--cream)">Hotel Partner</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)">Madina, Saudi Arabia</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
 
